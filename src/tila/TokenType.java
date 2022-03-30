@@ -1,0 +1,10 @@
+package tila;
+
+enum TokenType {
+    LEFT_PAREN, RIGHT_PAREN,
+    MINUS, PLUS, SEMICOLON, SLASH, STAR,
+    EQUAL,
+    IDENTIFIER, STRING, NUMBER,
+    PRINT, WHILE, DO, BEGIN, END, INT,
+    EOF
+}
