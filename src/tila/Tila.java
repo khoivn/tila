@@ -10,12 +10,14 @@ import java.util.List;
 
 public class Tila {
     static boolean hadError = false;
+    static String inputFile = null;
 
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
-            System.out.println("Usage: jlox [script]");
+            System.out.println("Error: Illegal input");
             System.exit(64);
         } else if (args.length == 1) {
+            inputFile = args[0];
             runFile(args[0]);
         } else {
             runPrompt();
@@ -53,8 +55,14 @@ public class Tila {
         report(line, column, "", message);
     }
 
+    private static String getFilePath() {
+        if (inputFile == null) return "";
+        return Paths.get(inputFile).toAbsolutePath().toString();
+    }
+
     private static void report(int line, int column, String where, String message) {
-        System.err.println("[" + line + ":" + column + "] Error" + where + ": " + message);
+        if (inputFile != null) System.err.println(getFilePath() + ":" + line + ":" + column);
+        System.err.println("Error" + where + ": " + message);
         hadError = true;
     }
 }
