@@ -1,8 +1,6 @@
 package tila;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,12 +53,11 @@ public class Tila {
 //        }
 
         ParserRec parser = new ParserRec(tokens);
-        Expr program = parser.parse();
+        Expression program = parser.parse();
         // Stop if there was a syntax error.
 
         if (hadError) return;
         System.out.println(program);
-        System.out.println(new AstPrinter().print(program));
     }
 
     static void error(int line, int column, String message) {

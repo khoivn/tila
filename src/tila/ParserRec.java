@@ -61,32 +61,32 @@ public class ParserRec {
     }
 
 
-    private Expr program() {
+    private Expression program() {
         if (match(BEGIN)) {
-            Expr statements = statements();
+            Expression statements = statements();
             consume(END, "Expect 'end' after expression");
-            return new Expr.Program(statements);
+            return new Expression.Program(statements);
         }
         throw error(peek(), "Expect expression");
     }
 
-    private Expr statements() {
+    private Expression statements() {
         if (peek().type == END) {
-            return new Expr.Epsilon();
+            return new Expression.Epsilon();
         }
-        Expr statement = statement();
+        Expression statement = statement();
         if (match(SEMICOLON)) {
-            Expr statements = statements();
-            return new Expr.Statements(statement, statements);
+            Expression statements = statements();
+            return new Expression.Statements(statement, statements);
         }
         throw error(peek(), "Expect 'end' or ';'");
     }
 
-    private Expr statement() {
+    private Expression statement() {
         if (match(PRINT)) {
             Token operator = previous();
-            Expr right = expr();
-            return new Expr.Unary(operator, right);
+            Expression right = expr();
+            return new Expression.Unary(operator, right);
         } else if (match(WHILE)) {
             return loop();
         } else if (match(IDENTIFIER)) {
@@ -97,92 +97,92 @@ public class ParserRec {
 //        throw error(peek(), "Expect statement");
     }
 
-    private Expr decl() {
+    private Expression decl() {
         if (peek().type == INT) {
             Token type = peek();
             advance();
             Token identifier = consume(IDENTIFIER, "Expect identifier");
-            Expr decl = decl();
-            return new Expr.Decl(type, identifier, decl);
+            Expression decl = decl();
+            return new Expression.Decl(type, identifier, decl);
         }
-        return new Expr.Epsilon();
+        return new Expression.Epsilon();
     }
 
-    private Expr assignment() {
+    private Expression assignment() {
         Token identifier = previous();
         consume(EQUAL, "Expect '='");
-        Expr expr = expr();
-        return new Expr.Assignment(identifier, expr);
+        Expression expr = expr();
+        return new Expression.Assignment(identifier, expr);
     }
 
-    private Expr loop() {
-        Expr condition = expr();
+    private Expression loop() {
+        Expression condition = expr();
         consume(DO, "Expect 'do'");
         consume(BEGIN, "Expect 'begin'");
-        Expr body = statements();
+        Expression body = statements();
         consume(END, "Expect 'end'");
-        return new Expr.While(condition, body);
+        return new Expression.While(condition, body);
     }
 
-    private Expr expr() {
-        return new Expr.Pair(expr1(), expr2());
+    private Expression expr() {
+        return new Expression.Expr(expr1(), expr2());
     }
 
-    private Expr expr1() {
-        return new Expr.Pair(expr3(), expr4());
+    private Expression expr1() {
+        return new Expression.Expr1(expr3(), expr4());
     }
 
-    private Expr expr2() {
+    private Expression expr2() {
         if (match(MINUS)) {
             Token operator = previous();
-            Expr middle = expr1();
-            Expr right = expr2();
-            return new Expr.Calculation(operator, middle, right);
+            Expression middle = expr1();
+            Expression right = expr2();
+            return new Expression.Calculation(operator, middle, right);
         }
-        return new Expr.Epsilon();
+        return new Expression.Epsilon();
     }
 
-    private Expr expr3() {
-        return new Expr.Pair(expr5(), expr7());
+    private Expression expr3() {
+        return new Expression.Expr3(expr5(), expr7());
     }
 
-    private Expr expr4() {
+    private Expression expr4() {
         if (match(STAR)) {
             Token operator = previous();
-            Expr middle = expr3();
-            Expr right = expr4();
-            return new Expr.Calculation(operator, middle, right);
+            Expression middle = expr3();
+            Expression right = expr4();
+            return new Expression.Calculation(operator, middle, right);
         }
-        return new Expr.Epsilon();
+        return new Expression.Epsilon();
     }
 
-    private Expr expr5() {
+    private Expression expr5() {
         if (match(LEFT_PAREN)) {
-            Expr expr = expr();
+            Expression expr = expr();
             consume(RIGHT_PAREN, "Expect ')' after expression");
-            return new Expr.Grouping(expr);
+            return new Expression.Grouping(expr);
         }
-        return new Expr.Grouping(expr6());
+        return expr6();
     }
 
-    private Expr expr6() {
+    private Expression expr6() {
         if (match(NUMBER, IDENTIFIER)) {
-            return new Expr.Literal(previous().literal);
+            return new Expression.Literal(previous());
         }
         throw error(peek(), "Expect identifier or number");
     }
 
-    private Expr expr7() {
+    private Expression expr7() {
         if (match(CARET)) {
             Token operator = previous();
-            Expr right = expr3();
-            return new Expr.Unary(operator, right);
+            Expression right = expr3();
+            return new Expression.Unary(operator, right);
         }
-        return new Expr.Epsilon();
+        return new Expression.Epsilon();
     }
 
 
-    Expr parse() {
+    Expression parse() {
         try {
             return program();
         } catch (ParseError error) {

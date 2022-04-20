@@ -4,8 +4,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static tila.Expression.Expr;
-import static tila.Expression.*;
+import static tila.ExpressionEnum.Expr;
+import static tila.ExpressionEnum.*;
 import static tila.TokenType.*;
 
 public class Parser {

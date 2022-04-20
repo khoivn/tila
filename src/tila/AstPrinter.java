@@ -1,142 +1,142 @@
 package tila;
 
-class AstPrinter implements Expr.Visitor<String> {
-    String print(Expr expr) {
+class AstPrinter implements Expression.Visitor<String> {
+    String print(Expression expr) {
         return expr.accept(this);
     }
 
 
     @Override
-    public String visitAssignExpr(Expr.Assignment expr) {
+    public String visitAssignExpr(Expression.Assignment expr) {
         return null;
     }
 
     @Override
-    public String visitBinaryExpr(Expr.Binary expr) {
+    public String visitBinaryExpr(Expression.Binary expr) {
         return parenthesize(expr.operator.lexeme,
                 expr.left, expr.right);
     }
 
     @Override
-    public String visitCallExpr(Expr.Call expr) {
+    public String visitCallExpr(Expression.Call expr) {
         return null;
     }
 
     @Override
-    public String visitGetExpr(Expr.Get expr) {
+    public String visitGetExpr(Expression.Get expr) {
         return null;
     }
 
     @Override
-    public String visitGroupingExpr(Expr.Grouping expr) {
+    public String visitGroupingExpr(Expression.Grouping expr) {
         return parenthesize("group", expr.expression);
     }
 
     @Override
-    public String visitProgramExpr(Expr.Program expr) {
+    public String visitProgramExpr(Expression.Program expr) {
         return null;
     }
 
     @Override
-    public String visitStatementExpr(Expr.Statements expr) {
+    public String visitStatementExpr(Expression.Statements expr) {
         return null;
     }
 
     @Override
-    public String visitLiteralExpr(Expr.Literal expr) {
+    public String visitLiteralExpr(Expression.Literal expr) {
         if (expr.value == null) return "null";
         return expr.value.toString();
     }
 
     @Override
-    public String visitEpsilonExpr(Expr.Epsilon expr) {
+    public String visitEpsilonExpr(Expression.Epsilon expr) {
         return "";
     }
 
     @Override
-    public String visitLogicalExpr(Expr.Logical expr) {
+    public String visitLogicalExpr(Expression.Logical expr) {
         return null;
     }
 
     @Override
-    public String visitSetExpr(Expr.Set expr) {
+    public String visitSetExpr(Expression.Set expr) {
         return null;
     }
 
     @Override
-    public String visitSuperExpr(Expr.Super expr) {
+    public String visitSuperExpr(Expression.Super expr) {
         return null;
     }
 
     @Override
-    public String visitThisExpr(Expr.This expr) {
+    public String visitThisExpr(Expression.This expr) {
         return null;
     }
 
     @Override
-    public String visitUnaryExpr(Expr.Unary expr) {
+    public String visitUnaryExpr(Expression.Unary expr) {
         return parenthesize(expr.operator.lexeme, expr.right);
     }
 
     @Override
-    public String visitDoubleUnaryExpr(Expr.Calculation expr) {
+    public String visitDoubleUnaryExpr(Expression.Calculation expr) {
         return null;
     }
 
     @Override
-    public String visitVariableExpr(Expr.Variable expr) {
+    public String visitVariableExpr(Expression.Variable expr) {
         return null;
     }
 
     @Override
-    public String visitPairExpr(Expr.Pair expr) {
+    public String visitPairExpr(Expression.Pair expr) {
         return null;
     }
 
     @Override
-    public String visitBlockStmt(Expr.Block stmt) {
+    public String visitBlockStmt(Expression.Block stmt) {
         return null;
     }
 
     @Override
-    public String visitClassStmt(Expr.Class stmt) {
+    public String visitClassStmt(Expression.Class stmt) {
         return null;
     }
 
     @Override
-    public String visitExpressionStmt(Expr.Expression stmt) {
+    public String visitExpressionStmt(Expression.Expr stmt) {
         return null;
     }
 
     @Override
-    public String visitFunctionStmt(Expr.Function stmt) {
+    public String visitFunctionStmt(Expression.Function stmt) {
         return null;
     }
 
     @Override
-    public String visitIfStmt(Expr.If stmt) {
+    public String visitIfStmt(Expression.If stmt) {
         return null;
     }
 
     @Override
-    public String visitPrintStmt(Expr.Print stmt) {
+    public String visitPrintStmt(Expression.Print stmt) {
         Object value = evaluate(stmt.expression);
         System.out.println(stringify(value));
         return null;
     }
 
     @Override
-    public String visitReturnStmt(Expr.Return stmt) {
+    public String visitReturnStmt(Expression.Return stmt) {
         return null;
     }
 
     @Override
-    public String visitVarStmt(Expr.Var stmt) {
+    public String visitVarStmt(Expression.Var stmt) {
         return null;
     }
 
     @Override
-    public String visitWhileStmt(Expr.While stmt) {
+    public String visitWhileStmt(Expression.While stmt) {
         while (isTruthy(evaluate(stmt.condition))) {
             execute(stmt.body);
         }
@@ -144,14 +144,14 @@ class AstPrinter implements Expr.Visitor<String> {
     }
 
     @Override
-    public String visitDecl(Expr.Decl stmt) {
+    public String visitDecl(Expression.Decl stmt) {
         return null;
     }
 
-    private String parenthesize(String name, Expr... exprs) {
+    private String parenthesize(String name, Expression... exprs) {
         StringBuilder builder = new StringBuilder();
         builder.append("(").append(name);
-        for (Expr expr : exprs) {
+        for (Expression expr : exprs) {
             builder.append(" ");
             builder.append(expr.accept(this));
         }
@@ -159,7 +159,7 @@ class AstPrinter implements Expr.Visitor<String> {
         return builder.toString();
     }
 
-    private Object evaluate(Expr expr) {
+    private Object evaluate(Expression expr) {
         return expr.accept(this);
     }
 
@@ -181,7 +181,7 @@ class AstPrinter implements Expr.Visitor<String> {
         return true;
     }
 
-    private void execute(Expr stmt) {
+    private void execute(Expression stmt) {
         stmt.accept(this);
     }
 }

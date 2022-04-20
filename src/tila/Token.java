@@ -23,6 +23,6 @@ class Token {
 //                ", line=" + line +
 //                ", column=" + column +
 //                '}';
-        return String.format("Token{%s}", lexeme);
+        return lexeme;
     }
 }
