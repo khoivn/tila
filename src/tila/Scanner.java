@@ -60,24 +60,27 @@ class Scanner {
             case '-':
                 addToken(MINUS);
                 break;
-            case '+':
-                addToken(PLUS);
+//            case '+':
+//                addToken(PLUS);
+//                break;
+            case '^':
+                addToken(CARET);
                 break;
             case '*':
                 addToken(STAR);
                 break;
-            case '/':
-                addToken(SLASH);
-                break;
+//            case '/':
+//                addToken(SLASH);
+//                break;
             case ';':
                 addToken(SEMICOLON);
                 break;
             case '=':
                 addToken(EQUAL);
                 break;
-            case '"':
-                string();
-                break;
+//            case '"':
+//                string();
+//                break;
             case ' ':
             case '\r':
             case '\t':
@@ -118,20 +121,20 @@ class Scanner {
         return source.charAt(current);
     }
 
-    private void string() {
-        while (peek() != '"' && !isAtEnd()) {
-            if (peek() == '\n') line++;
-            advance();
-        }
-        if (isAtEnd()) {
-            Tila.error(line, column, "Unterminated string.");
-            return;
-        }
-        // The closing ".
-        advance();
-        String value = source.substring(start + 1, current - 1);
-        addToken(STRING, value);
-    }
+//    private void string() {
+//        while (peek() != '"' && !isAtEnd()) {
+//            if (peek() == '\n') line++;
+//            advance();
+//        }
+//        if (isAtEnd()) {
+//            Tila.error(line, column, "Unterminated string.");
+//            return;
+//        }
+//        // The closing ".
+//        advance();
+//        String value = source.substring(start + 1, current - 1);
+//        addToken(STRING, value);
+//    }
 
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
@@ -140,12 +143,17 @@ class Scanner {
     private void number() {
         while (isDigit(peek())) advance();
         // Look for a fractional part.
-        if (peek() == '.' && isDigit(peekNext())) {
-            // Consume the "."
-            advance();
-            while (isDigit(peek())) advance();
+//        if (peek() == '.' && isDigit(peekNext())) {
+//            // Consume the "."
+//            advance();
+//            while (isDigit(peek())) advance();
+//        }
+        String numberString = source.substring(start, current);
+        if (numberString.startsWith("0") && numberString.length() > 1) {
+            Tila.error(line, column, String.format("Unexpected number \"%s\"", numberString));
+        } else {
+            addToken(NUMBER, Double.parseDouble(numberString));
         }
-        addToken(NUMBER, Double.parseDouble(source.substring(start, current)));
     }
 
     private char peekNext() {

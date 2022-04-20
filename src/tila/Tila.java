@@ -1,5 +1,9 @@
 package tila;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,17 +46,30 @@ public class Tila {
         }
     }
 
-    private static void run(String source) {
+    private static void run(String source) throws JsonProcessingException {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
         // For now, just print the tokens.
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
+//        for (Token token : tokens) {
+//            System.out.println(token);
+//        }
+
+        ParserRec parser = new ParserRec(tokens);
+        Expr program = parser.parse();
+        // Stop if there was a syntax error.
+
+        if (hadError) return;
+        System.out.println(program);
+        System.out.println(new AstPrinter().print(program));
     }
 
     static void error(int line, int column, String message) {
         report(line, column, "", message);
+    }
+
+    static void error(Token token, String message) {
+        System.err.println(message);
+//        report(line, column, "", message);
     }
 
     private static String getFilePath() {

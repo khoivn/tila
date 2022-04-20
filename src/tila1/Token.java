@@ -1,4 +1,4 @@
-package tila;
+package tila1;
 
 class Token {
     final TokenType type;
@@ -17,12 +17,11 @@ class Token {
 
     @Override
     public String toString() {
-//        return "{" +
-//                "type=" + type +
-//                ", lexeme='" + lexeme + '\'' +
-//                ", line=" + line +
-//                ", column=" + column +
-//                '}';
-        return String.format("Token{%s}", lexeme);
+        return "{" +
+                "type=" + type +
+                ", lexeme='" + lexeme + '\'' +
+                ", line=" + line +
+                ", column=" + column +
+                '}';
     }
 }

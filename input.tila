@@ -3,13 +3,21 @@ begin
     int b;
     int c;
     int d;
-    string s;
-    s="Test";
 
     b=1;
     c=2;
-    d=3;
-    a=(b+c)*d;
+    d=c - 3;
+    a=( b - 2 * c) * d ^ c;
     print a;
     print s;
+    while (b) do begin
+        print 1;
+    end;
+
+    while b-2 do begin
+        int e;
+        while c-3 do begin
+            print f;
+        end;
+    end;
 end
