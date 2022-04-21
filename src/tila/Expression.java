@@ -63,8 +63,8 @@ abstract class Expression {
     // Nested Expr classes here...
     abstract <R> R accept(Visitor<R> visitor);
 
-    static class Assignment extends tila.Expression {
-        Assignment(Token id, tila.Expression expr) {
+    static class Assignment extends Expression {
+        Assignment(Token id, Expression expr) {
             this.id = id;
             this.expr = expr;
         }
@@ -74,7 +74,7 @@ abstract class Expression {
         }
 
         final Token id;
-        final tila.Expression expr;
+        final Expression expr;
 
         @Override
         public String toString() {
@@ -82,8 +82,8 @@ abstract class Expression {
         }
     }
 
-    static class Binary extends tila.Expression {
-        Binary(tila.Expression left, Token operator, tila.Expression right) {
+    static class Binary extends Expression {
+        Binary(Expression left, Token operator, Expression right) {
             this.left = left;
             this.operator = operator;
             this.right = right;
@@ -94,13 +94,13 @@ abstract class Expression {
             return visitor.visitBinaryExpr(this);
         }
 
-        final tila.Expression left;
+        final Expression left;
         final Token operator;
-        final tila.Expression right;
+        final Expression right;
     }
 
-    static class Call extends tila.Expression {
-        Call(tila.Expression callee, Token paren, List<tila.Expression> arguments) {
+    static class Call extends Expression {
+        Call(Expression callee, Token paren, List<Expression> arguments) {
             this.callee = callee;
             this.paren = paren;
             this.arguments = arguments;
@@ -111,13 +111,13 @@ abstract class Expression {
             return visitor.visitCallExpr(this);
         }
 
-        final tila.Expression callee;
+        final Expression callee;
         final Token paren;
-        final List<tila.Expression> arguments;
+        final List<Expression> arguments;
     }
 
-    static class Get extends tila.Expression {
-        Get(tila.Expression object, Token name) {
+    static class Get extends Expression {
+        Get(Expression object, Token name) {
             this.object = object;
             this.name = name;
         }
@@ -127,12 +127,12 @@ abstract class Expression {
             return visitor.visitGetExpr(this);
         }
 
-        final tila.Expression object;
+        final Expression object;
         final Token name;
     }
 
-    static class Grouping extends tila.Expression {
-        Grouping(tila.Expression expression) {
+    static class Grouping extends Expression {
+        Grouping(Expression expression) {
             this.expression = expression;
         }
 
@@ -141,7 +141,7 @@ abstract class Expression {
             return visitor.visitGroupingExpr(this);
         }
 
-        final tila.Expression expression;
+        final Expression expression;
 
         @Override
         public String toString() {
@@ -150,8 +150,8 @@ abstract class Expression {
     }
 
 
-    static class Program extends tila.Expression {
-        Program(tila.Expression statements) {
+    static class Program extends Expression {
+        Program(Expression statements) {
             this.statements = statements;
         }
 
@@ -160,7 +160,7 @@ abstract class Expression {
             return visitor.visitProgramExpr(this);
         }
 
-        final tila.Expression statements;
+        final Expression statements;
 
         @Override
         public String toString() {
@@ -168,8 +168,8 @@ abstract class Expression {
         }
     }
 
-    static class Statements extends tila.Expression {
-        Statements(tila.Expression statement, tila.Expression statements) {
+    static class Statements extends Expression {
+        Statements(Expression statement, Expression statements) {
             this.statement = statement;
             this.statements = statements;
         }
@@ -179,8 +179,8 @@ abstract class Expression {
             return visitor.visitStatementExpr(this);
         }
 
-        final tila.Expression statements;
-        final tila.Expression statement;
+        final Expression statements;
+        final Expression statement;
 
         @Override
         public String toString() {
@@ -188,7 +188,7 @@ abstract class Expression {
         }
     }
 
-    static class Literal extends tila.Expression {
+    static class Literal extends Expression {
         Literal(Object value) {
             this.value = value;
         }
@@ -206,7 +206,7 @@ abstract class Expression {
         }
     }
 
-    static class Epsilon extends tila.Expression {
+    static class Epsilon extends Expression {
         Epsilon() {
         }
 
@@ -221,8 +221,8 @@ abstract class Expression {
         }
     }
 
-    static class Logical extends tila.Expression {
-        Logical(tila.Expression left, Token operator, tila.Expression right) {
+    static class Logical extends Expression {
+        Logical(Expression left, Token operator, Expression right) {
             this.left = left;
             this.operator = operator;
             this.right = right;
@@ -233,13 +233,13 @@ abstract class Expression {
             return visitor.visitLogicalExpr(this);
         }
 
-        final tila.Expression left;
+        final Expression left;
         final Token operator;
-        final tila.Expression right;
+        final Expression right;
     }
 
-    static class Set extends tila.Expression {
-        Set(tila.Expression object, Token name, tila.Expression value) {
+    static class Set extends Expression {
+        Set(Expression object, Token name, Expression value) {
             this.object = object;
             this.name = name;
             this.value = value;
@@ -250,12 +250,12 @@ abstract class Expression {
             return visitor.visitSetExpr(this);
         }
 
-        final tila.Expression object;
+        final Expression object;
         final Token name;
-        final tila.Expression value;
+        final Expression value;
     }
 
-    static class Super extends tila.Expression {
+    static class Super extends Expression {
         Super(Token keyword, Token method) {
             this.keyword = keyword;
             this.method = method;
@@ -271,7 +271,7 @@ abstract class Expression {
     }
 
 
-    static class This extends tila.Expression {
+    static class This extends Expression {
         This(Token keyword) {
             this.keyword = keyword;
         }
@@ -284,8 +284,8 @@ abstract class Expression {
         final Token keyword;
     }
 
-    static class Unary extends tila.Expression {
-        Unary(Token operator, tila.Expression right) {
+    static class Unary extends Expression {
+        Unary(Token operator, Expression right) {
             this.operator = operator;
             this.right = right;
         }
@@ -296,7 +296,7 @@ abstract class Expression {
         }
 
         final Token operator;
-        final tila.Expression right;
+        final Expression right;
 
         @Override
         public String toString() {
@@ -304,8 +304,8 @@ abstract class Expression {
         }
     }
 
-    static class Calculation extends tila.Expression {
-        Calculation(Token operator, tila.Expression middle, tila.Expression right) {
+    static class Calculation extends Expression {
+        Calculation(Token operator, Expression middle, Expression right) {
             this.operator = operator;
             this.middle = middle;
             this.right = right;
@@ -317,8 +317,8 @@ abstract class Expression {
         }
 
         final Token operator;
-        final tila.Expression middle;
-        final tila.Expression right;
+        final Expression middle;
+        final Expression right;
 
         @Override
         public String toString() {
@@ -326,7 +326,7 @@ abstract class Expression {
         }
     }
 
-    static class Variable extends tila.Expression {
+    static class Variable extends Expression {
         Variable(Token name) {
             this.name = name;
         }
@@ -339,8 +339,8 @@ abstract class Expression {
         final Token name;
     }
 
-    static class Pair extends tila.Expression {
-        Pair(tila.Expression left, tila.Expression right) {
+    static class Pair extends Expression {
+        Pair(Expression left, Expression right) {
             this.left = left;
             this.right = right;
         }
@@ -350,8 +350,8 @@ abstract class Expression {
             return visitor.visitPairExpr(this);
         }
 
-        final tila.Expression left;
-        final tila.Expression right;
+        final Expression left;
+        final Expression right;
 
         @Override
         public String toString() {
@@ -390,8 +390,8 @@ abstract class Expression {
     }
 
 
-    static class Block extends tila.Expression {
-        Block(List<tila.Expression> statements) {
+    static class Block extends Expression {
+        Block(List<Expression> statements) {
             this.statements = statements;
         }
 
@@ -400,12 +400,12 @@ abstract class Expression {
             return visitor.visitBlockStmt(this);
         }
 
-        final List<tila.Expression> statements;
+        final List<Expression> statements;
     }
 
-    static class Class extends tila.Expression {
+    static class Class extends Expression {
         Class(Token name,
-              tila.Expression.Variable superclass,
+              Expression.Variable superclass,
               List<Function> methods) {
             this.name = name;
             this.superclass = superclass;
@@ -418,7 +418,7 @@ abstract class Expression {
         }
 
         final Token name;
-        final tila.Expression.Variable superclass;
+        final Expression.Variable superclass;
         final List<Function> methods;
     }
 
@@ -435,8 +435,8 @@ abstract class Expression {
 //        final Expression expression;
 //    }
 
-    static class Function extends tila.Expression {
-        Function(Token name, List<Token> params, List<tila.Expression> body) {
+    static class Function extends Expression {
+        Function(Token name, List<Token> params, List<Expression> body) {
             this.name = name;
             this.params = params;
             this.body = body;
@@ -449,11 +449,11 @@ abstract class Expression {
 
         final Token name;
         final List<Token> params;
-        final List<tila.Expression> body;
+        final List<Expression> body;
     }
 
-    static class If extends tila.Expression {
-        If(tila.Expression condition, tila.Expression thenBranch, tila.Expression elseBranch) {
+    static class If extends Expression {
+        If(Expression condition, Expression thenBranch, Expression elseBranch) {
             this.condition = condition;
             this.thenBranch = thenBranch;
             this.elseBranch = elseBranch;
@@ -464,13 +464,13 @@ abstract class Expression {
             return visitor.visitIfStmt(this);
         }
 
-        final tila.Expression condition;
-        final tila.Expression thenBranch;
-        final tila.Expression elseBranch;
+        final Expression condition;
+        final Expression thenBranch;
+        final Expression elseBranch;
     }
 
-    static class Print extends tila.Expression {
-        Print(tila.Expression expression) {
+    static class Print extends Expression {
+        Print(Expression expression) {
             this.expression = expression;
         }
 
@@ -479,11 +479,11 @@ abstract class Expression {
             return visitor.visitPrintStmt(this);
         }
 
-        final tila.Expression expression;
+        final Expression expression;
     }
 
-    static class Return extends tila.Expression {
-        Return(Token keyword, tila.Expression value) {
+    static class Return extends Expression {
+        Return(Token keyword, Expression value) {
             this.keyword = keyword;
             this.value = value;
         }
@@ -494,11 +494,11 @@ abstract class Expression {
         }
 
         final Token keyword;
-        final tila.Expression value;
+        final Expression value;
     }
 
-    static class Var extends tila.Expression {
-        Var(Token name, tila.Expression initializer) {
+    static class Var extends Expression {
+        Var(Token name, Expression initializer) {
             this.name = name;
             this.initializer = initializer;
         }
@@ -509,11 +509,11 @@ abstract class Expression {
         }
 
         final Token name;
-        final tila.Expression initializer;
+        final Expression initializer;
     }
 
-    static class While extends tila.Expression {
-        While(tila.Expression condition, tila.Expression body) {
+    static class While extends Expression {
+        While(Expression condition, Expression body) {
             this.condition = condition;
             this.body = body;
         }
@@ -523,8 +523,8 @@ abstract class Expression {
             return visitor.visitWhileStmt(this);
         }
 
-        final tila.Expression condition;
-        final tila.Expression body;
+        final Expression condition;
+        final Expression body;
 
         @Override
         public String toString() {
@@ -532,11 +532,11 @@ abstract class Expression {
         }
     }
 
-    static class Decl extends tila.Expression {
-        Decl(Token type, Token identifier, tila.Expression decl) {
+    static class Decl extends Expression {
+        Decl(Token type, Token identifier) {
             this.type = type;
             this.identifier = identifier;
-            this.decl = decl;
+//            this.decl = decl;
         }
 
         @Override
@@ -546,11 +546,11 @@ abstract class Expression {
 
         final Token type;
         final Token identifier;
-        final tila.Expression decl;
+//        final Expression decl;
 
         @Override
         public String toString() {
-            return String.format("Decl{%s %s; %s}", type, identifier, decl);
+            return String.format("Decl{%s %s}", type, identifier);
         }
     }
 }

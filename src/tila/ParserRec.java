@@ -98,14 +98,16 @@ public class ParserRec {
     }
 
     private Expression decl() {
-        if (peek().type == INT) {
-            Token type = peek();
-            advance();
-            Token identifier = consume(IDENTIFIER, "Expect identifier");
-            Expression decl = decl();
-            return new Expression.Decl(type, identifier, decl);
-        }
-        return new Expression.Epsilon();
+//        if (match(INT)) {
+//            Token type = previous();
+//            Token identifier = consume(IDENTIFIER, "Expect identifier");
+//            Expression decl = decl();
+//            return new Expression.Decl(type, identifier, decl);
+//        }
+//        return new Expression.Epsilon();
+        Token type = consume(INT, "Expect type");
+        Token identifier = consume(IDENTIFIER, "Expect identifier");
+        return new Expression.Decl(type, identifier);
     }
 
     private Expression assignment() {
